@@ -1,0 +1,6 @@
+Django>=4.2,<5.0
+djangorestframework>=3.14
+Pillow>=10.0  # for image uploads (avatars)
+python-dotenv>=1.0  # for loading .env files
+django-cors-headers>=4.3  # for cross-origin requests
+djangorestframework-simplejwt>=5.3  # for JWT authentication

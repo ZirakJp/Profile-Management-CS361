@@ -51,7 +51,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'cs361_UserProfileManagement.urls'
+ROOT_URLCONF = 'ProjectConfig.urls'
 
 TEMPLATES = [
     {
@@ -68,7 +68,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'cs361_UserProfileManagement.wsgi.application'
+WSGI_APPLICATION = 'ProjectConfig.wsgi.application'
 
 
 # Database

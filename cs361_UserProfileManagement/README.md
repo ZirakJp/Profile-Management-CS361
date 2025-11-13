@@ -4,11 +4,11 @@ UserProfileManagement is a Django REST Framework microservice that manages user 
 
 ---
 
-# Project Structure
+# Project Structure Example
 
 PROFILE-MANAGEMENT-CS361/
 |--cs361_UserProfileManagement/
-|   |--cs361_UserProfileManagement/
+|   |--Project-Config/
 |   |   |-- __init__.py
 |   |   |-- settings.py
 |   |   |-- urls.py
@@ -67,6 +67,11 @@ cd CS361_UserProfileManagement
 ### 2. Create Virtual Environment
 
 python3 -m venv venv
+
+(If you're using Windows the command line is:
+python -m venv venv
+)
+
 source venv/bin/activate
 
 ### 3. Install Dependencies
