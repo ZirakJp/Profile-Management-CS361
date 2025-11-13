@@ -60,7 +60,6 @@ PROFILE-MANAGEMENT-CS361/
 
 ### 1. Clone the Repository
 
-```bash
 git clone https://github.com/<your-username>/UserProfileManagement.git
 cd CS361_UserProfileManagement
 
