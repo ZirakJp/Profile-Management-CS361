@@ -7,45 +7,46 @@ UserProfileManagement is a Django REST Framework microservice that manages user 
 # Project Structure
 
 PROFILE-MANAGEMENT-CS361/
-├── cs361_UserProfileManagement/
-│   ├── cs361_UserProfileManagement/
-│   │   ├── __init__.py
-│   │   ├── settings.py
-│   │   ├── urls.py
-│   │   ├── wsgi.py
-│   │   └── asgi.py
-│   ├── UserProfileManagement/
-│   │   ├── __init__.py
-│   │   ├── admin.py
-│   │   ├── apps.py
-│   │   ├── models.py
-│   │   ├── serializers.py
-│   │   ├── views.py
-│   │   ├── urls.py
-│   │   ├── tests.py
-│   │   └── migrations/
-│   ├── db.sqlite3
-│   ├── manage.py
-│   ├── .env.example.txt
-│   └── README.md
-└── venv/
+|--cs361_UserProfileManagement/
+|   |--cs361_UserProfileManagement/
+|   |   |-- __init__.py
+|   |   |-- settings.py
+|   |   |-- urls.py
+|   |   |--wsgi.py
+|   |   |-- asgi.py
+|   |
+|   |--UserProfileManagement/
+|   |   |-- __init__.py
+|   |   |-- admin.py
+|   |   |-- apps.py
+|   |   |-- models.py
+|   |   |-- serializers.py
+|   |   |-- views.py
+|   |   |-- rls.py
+|   |   |-- tests.py
+|   |   |-- migrations/
+|   |--db.sqlite3
+|   |--manage.py
+|   |--.env.example.txt
+|   |--README.md
+|-venv/
 
 # Request Flow:
-[ Client Request ]
-       ↓
-[ manage.py runserver ]
-       ↓
-[ cs361_UserProfileManagement/urls.py ]
-       ↓
-[ UserProfileManagement/urls.py ]
-       ↓
-[ views.py ]
-       ↓
-[ models.py ] ←→ [ db.sqlite3 ]
-       ↓
-[ serializers.py ]
-       ↓
-[ JSON Response to Client ]
+[ Client Request ] ->
+
+[ manage.py runserver ] ->
+
+[ cs361_UserProfileManagement/urls.py ] ->
+
+[ UserProfileManagement/urls.py ] ->
+
+[ views.py ] ->
+
+[ models.py ] ←→ [ db.sqlite3 ] ->
+
+[ serializers.py ] ->
+       
+[ JSON Response to Client ] ->
 
 ## Features
 
