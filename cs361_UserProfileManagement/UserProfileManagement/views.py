@@ -1,15 +1,45 @@
 from rest_framework import generics, permissions
-from .models import User, UploadedFile
-from .serializers import UserSerializer, FileUploadSerializer
+from .models import User, UploadedFile, UploadedImage
+from .serializers import UserSerializer, ImageRetrieveSerializer, ImageUploadSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework import status
+from django.conf import settings
 
-class UploadFileView(generics.CreateAPIView):
-    serializer_class = FileUploadSerializer
-    permission_classes = [permissions.IsAuthenticated]
+import base64
+import requests
 
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+class UploadFileView(APIView):
+    def post(self, request):
+        serializer = ImageUploadSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        file = serializer.validated_data['file']
+        image_data = base64.b64encode(file.read()).decode('utf-8')
+        payload = {
+            "images": [{"filename": file.name, "image_data": image_data}]
+        }
+
+        try:
+            res = requests.post(f"{settings.IMAGE_SERVICE_URL}/upload", json=payload)
+            res.raise_for_status()
+
+            # Handle anonymous user
+            user = request.user if request.user.is_authenticated else None
+
+            # Save metadata
+            UploadedImage.objects.create(
+                user=user,
+                filename=file.name,
+                description=request.data.get("description", ""),
+                source="flask-service"
+            )
+
+            return Response(res.json(), status=res.status_code)
+
+        except requests.exceptions.RequestException as e:
+            return Response({"error": str(e)}, status=status.HTTP_502_BAD_GATEWAY)
 
 class EditUserProfileView(generics.UpdateAPIView):
     serializer_class = UserSerializer
@@ -32,3 +62,24 @@ class GlobalFeaturesView(APIView):
 
     def get(self, request):
         return Response({'features': ['explore', 'search', 'view public profiles']})
+
+
+class GetImageView(APIView):
+    def post(self, request):
+        serializer = ImageRetrieveSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        payload = {"filenames": serializer.validated_data["filenames"]}
+
+        try:
+            res = requests.post(f"{settings.IMAGE_SERVICE_URL}/get", json=payload)
+            return Response(res.json(), status=res.status_code)
+        except requests.exceptions.RequestException as e:
+            return Response({"error": str(e)}, status=status.HTTP_502_BAD_GATEWAY)
+
+class HealthCheckView(APIView):
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request):
+        return Response({"status": "ok"}, status=200)
