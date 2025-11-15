@@ -61,7 +61,8 @@ PROFILE-MANAGEMENT-CS361/
 
 ### 1. Clone the Repository
 
-git clone https://github.com/<your-username>/UserProfileManagement.git
+git clone https://github.com/ZirakJp/Profile-Management-CS361
+
 cd CS361_UserProfileManagement
 
 ### 2. Create Virtual Environment

@@ -86,3 +86,48 @@ class HealthCheckView(APIView):
 
     def get(self, request):
         return Response({"status": "ok"}, status=200)
+
+class UserDetailForAuthView(APIView):
+    permission_classes = [permissions.AllowAny]  # Allow Express to access this
+
+    def get(self, request, username):
+        try:
+            user = User.objects.get(username=username)
+            return Response({
+                "id": user.id,
+                "username": user.username,
+                "passwordHash": user.password,  # Django stores hashed password
+                "roles": ["user"] 
+            })
+        except User.DoesNotExist:
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+
+class LoginView(APIView):
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request):
+        username = request.data.get("username")
+        password = request.data.get("password")
+
+        if not username or not password:
+            return Response({"error": "Missing credentials"}, status=400)
+
+        try:
+            res = requests.post(f"{settings.EXPRESS_AUTH_URL}/login", json={"username": username, "password": password})
+            res.raise_for_status()
+            return Response(res.json(), status=200)
+        except requests.exceptions.RequestException:
+            return Response({"error": "Invalid credentials"}, status=401)
+
+
+class ExpressPingView(APIView):
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request):
+        payload = {"username": "trong", "password": "cs361"}
+        try:
+            res = requests.post(f"{settings.EXPRESS_AUTH_URL}/login", json=payload)
+            res.raise_for_status()
+            return Response(res.json(), status=200)
+        except requests.exceptions.RequestException:
+            return Response({"error": "Express login failed"}, status=502)

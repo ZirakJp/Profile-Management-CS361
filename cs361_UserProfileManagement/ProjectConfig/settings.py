@@ -16,6 +16,7 @@ import os
 #load_dotenv()
 IMAGE_SERVICE_URL = "http://localhost:5001"
 FRIEND_IMAGE_SERVICE_URL = "http://localhost:5001/upload"
+EXPRESS_AUTH_URL = "http://localhost:5002"
 
 ICE_URL = os.getenv("IMAGE_SERVICE_URL", "http://localhost:5001")
 
