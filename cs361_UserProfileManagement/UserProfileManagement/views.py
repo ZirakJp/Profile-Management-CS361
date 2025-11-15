@@ -17,30 +17,33 @@ class UploadFileView(APIView):
 
         file = serializer.validated_data['file']
         image_data = base64.b64encode(file.read()).decode('utf-8')
+
         payload = {
-            "images": [{"filename": file.name, "image_data": image_data}]
+            "images": [
+                {
+                    "filename": file.name,
+                    "image_data": image_data
+                }
+            ]
         }
 
         try:
-            res = requests.post(f"{settings.IMAGE_SERVICE_URL}/upload", json=payload)
+            res = requests.post("http://localhost:5001/upload", json=payload)
             res.raise_for_status()
 
-            # Handle anonymous user
             user = request.user if request.user.is_authenticated else None
-
-            # Save metadata
             UploadedImage.objects.create(
                 user=user,
                 filename=file.name,
                 description=request.data.get("description", ""),
-                source="flask-service"
+                source="friend-flask-service"
             )
 
             return Response(res.json(), status=res.status_code)
 
         except requests.exceptions.RequestException as e:
             return Response({"error": str(e)}, status=status.HTTP_502_BAD_GATEWAY)
-
+        
 class EditUserProfileView(generics.UpdateAPIView):
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAuthenticated]

@@ -15,6 +15,7 @@ from pathlib import Path
 import os
 #load_dotenv()
 IMAGE_SERVICE_URL = "http://localhost:5001"
+FRIEND_IMAGE_SERVICE_URL = "http://localhost:5001/upload"
 
 ICE_URL = os.getenv("IMAGE_SERVICE_URL", "http://localhost:5001")
 
