@@ -3,7 +3,53 @@
 UserProfileManagement is a Django REST Framework microservice that manages user profiles, file uploads, admin dashboards, and public features. It’s designed to integrate with external authentication services using JWT tokens.
 
 ---
+# # Example of Request and Receive Data:
 
+1. Login (via external authentication):
+Request:
+    POST http://127.0.0.1:8000/api/auth/login/
+Content-Type: application/json
+
+{
+  "username": "trong",
+  "password": "cs361"
+}
+
+Response:
+{
+  "accessToken": "eyJhbGciOiJIUzI1NiIs...",
+  "expiresAt": "2025-11-28T21:30:00Z"
+}
+
+2. Get User Profile:
+Request:
+GET http://127.0.0.1:8000/api/users/trong
+Authorization: Bearer <accessToken>
+
+Response:
+{
+  "id": 1,
+  "username": "trong",
+  "email": "trong@example.com",
+  "roles": ["user"],
+  "date_joined": "2025-11-15T12:00:00Z"
+}
+
+3. Upload File
+Request:
+POST http://127.0.0.1:8000/api/files/upload/
+Authorization: Bearer <accessToken>
+Content-Type: multipart/form-data
+
+file=@cat.png
+description="Profile avatar"
+
+Response:
+{
+  "message": "File uploaded successfully",
+  "filename": "cat.png",
+  "owner": "trong"
+}
 # Project Structure Example
 
 PROFILE-MANAGEMENT-CS361/
